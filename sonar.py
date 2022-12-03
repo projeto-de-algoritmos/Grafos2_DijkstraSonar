@@ -30,6 +30,7 @@ class Sonar:
             rect = submarine_image.get_rect()
             rect.center = (self.x * w + w // 4, self.y * h + h // 4)
             win.blit(submarine_image, rect)
+        # Add enemy
         elif shape == 3:
             submarine_image = pygame.image.load('assets/submarine_3.png').convert_alpha()
             rect = submarine_image.get_rect()

@@ -2,6 +2,7 @@ import pygame
 from config import PARAMS
 from collections import deque
 import utils
+import random
 import sys
 from button import Button
 from tkinter import messagebox, Tk
@@ -28,18 +29,20 @@ def play():
     grid = utils.create_grid()
     grid = utils.fill_grid(grid)
 
-    start = grid[10][10]
-    end = grid[PARAMS["cols"] - PARAMS["cols"] // 2][PARAMS["rows"] - PARAMS["cols"] // 4]
+    pos1_sub = random.randint(1, 63)
+    pos2_sub = random.randint(1, 35)
+    start = grid[pos1_sub][pos2_sub]
+    end = grid[random.randint(1, 63)][random.randint(1, 35)]
     end_2 = grid[PARAMS["cols"] - PARAMS["cols"] // 3][PARAMS["rows"] - PARAMS["cols"] // 5]
+    end_3 = grid[PARAMS["cols"] - PARAMS["cols"] // random.randint(1, 63)][PARAMS["rows"] - PARAMS["cols"] // random.randint(1, 35)]
     start.wall = False
     end.wall = False
     end_2.wall = False
 
     queue.append(start)
     start.visited = True
-    flag = False
-    noflag = True
-    startflag = False
+    no_flag = True
+    star_tflag = False
 
     while True:
         for event in pygame.event.get():
@@ -54,54 +57,48 @@ def play():
                     utils.create_wall(pygame.mouse.get_pos(), event.buttons[0], grid, w, h)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    startflag = True
+                    star_tflag = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     main_menu()
-        if startflag:
+        if star_tflag:
             if len(queue) > 0:
                 current = queue.popleft()
-                if current == end or current == end_2:
+                if current == end or current == end_2 or current == end_3:
                     temp = current
                     while temp.prev:
                         path.append(temp.prev)
                         temp = temp.prev
-                    if not flag:
-                        flag = True
-                        print("Done")
-                    elif flag:
-                        continue
-                if not flag:
-                    for i in current.neighbors:
-                        if not i.visited and not i.wall:
-                            i.visited = True
-                            i.prev = current
-                            queue.append(i)
+                for i in current.neighbors:
+                    if not i.visited and not i.wall:
+                        i.visited = True
+                        i.prev = current
+                        queue.append(i)
             else:
-                if noflag and not flag:
+                if no_flag:
                     Tk().wm_withdraw()
-                    messagebox.showinfo("Inimigos não encontrados", "Pressione ESC e tente outro mapa")
-                    noflag = False
+                    messagebox.showinfo("FIM", "Pressione ESC e inicie novamente")
+                    no_flag = False
                 else:
                     continue
 
         SCREEN.fill((0, 20, 20))
         for i in range(PARAMS["cols"]):
             for j in range(PARAMS["rows"]):
-                spot = grid[i][j]
-                spot.show(SCREEN, (44, 62, 80))
-                if spot in path:
-                    spot.show(SCREEN, (46, 204, 113))
-                    spot.show(SCREEN, (192, 57, 43), 0)
-                elif spot.visited:
-                    spot.show(SCREEN, (44, 62, 80))
-                if spot in queue and not flag:
-                    spot.show(SCREEN, (44, 62, 80))
-                    spot.show(SCREEN, (39, 174, 96), 0)
-                if spot == start:
-                    spot.show(SCREEN, (0, 255, 200), shape=2)
-                if spot == end or spot == end_2:
-                    spot.show(SCREEN, (255, 0, 0), shape=3)
+                current_pos = grid[i][j]
+                current_pos.show(SCREEN, (57, 105, 161))
+                if current_pos in path:
+                    current_pos.show(SCREEN, (57, 105, 161))
+                    current_pos.show(SCREEN, (192, 57, 43), 0)
+                elif current_pos.visited:
+                    current_pos.show(SCREEN, (57, 105, 161))
+                if current_pos in queue:
+                    current_pos.show(SCREEN, (57, 105, 161))
+                    current_pos.show(SCREEN, (39, 174, 96), 0)
+                if current_pos == start:
+                    current_pos.show(SCREEN, (0, 255, 200), shape=2)
+                if current_pos == end or current_pos == end_2 or current_pos == end_3:
+                    current_pos.show(SCREEN, (255, 0, 0), shape=3)
 
         pygame.display.flip()
 
