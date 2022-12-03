@@ -1,8 +1,13 @@
 import pygame
 from config import PARAMS
+from collections import deque
 import utils
 import sys
 from button import Button
+from tkinter import messagebox, Tk
+
+w = PARAMS["width_screen"] // PARAMS["cols"]
+h = PARAMS["height_screen"] // PARAMS["rows"]
 
 pygame.init()
 pygame.display.set_caption("Dijkstra's Sonar")
@@ -16,28 +21,89 @@ pygame.mixer.music.load('assets/Sneaky-Snitch.mp3')
 pygame.mixer.music.play(-1)
 
 def play():
+
+    queue, visited = deque(), []
+    path = []
+
+    grid = utils.create_grid()
+    grid = utils.fill_grid(grid)
+
+    start = grid[10][10]
+    end = grid[PARAMS["cols"] - PARAMS["cols"] // 2][PARAMS["rows"] - PARAMS["cols"] // 4]
+    end_2 = grid[PARAMS["cols"] - PARAMS["cols"] // 3][PARAMS["rows"] - PARAMS["cols"] // 5]
+    start.wall = False
+    end.wall = False
+    end_2.wall = False
+
+    queue.append(start)
+    start.visited = True
+    flag = False
+    noflag = True
+    startflag = False
+
     while True:
-        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-
-        SCREEN.fill("white")
-
-        OPTIONS_TEXT = utils.get_font(45).render("PLAY SCREEN", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
-        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
-
-        OPTIONS_BACK = Button(image=None, pos=(640, 460),
-                              text_input="BACK", font=utils.get_font(75), base_color="Black", hovering_color="Green")
-
-        OPTIONS_BACK.change_color(OPTIONS_MOUSE_POS)
-        OPTIONS_BACK.update(SCREEN)
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if OPTIONS_BACK.check_for_input(OPTIONS_MOUSE_POS):
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button in (1, 3):
+                    utils.create_wall(pygame.mouse.get_pos(), event.button == 1, grid, w, h)
+            elif event.type == pygame.MOUSEMOTION:
+                if event.buttons[0] or event.buttons[2]:
+                    utils.create_wall(pygame.mouse.get_pos(), event.buttons[0], grid, w, h)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    startflag = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
                     main_menu()
+        if startflag:
+            if len(queue) > 0:
+                current = queue.popleft()
+                if current == end or current == end_2:
+                    temp = current
+                    while temp.prev:
+                        path.append(temp.prev)
+                        temp = temp.prev
+                    if not flag:
+                        flag = True
+                        print("Done")
+                    elif flag:
+                        continue
+                if not flag:
+                    for i in current.neighbors:
+                        if not i.visited and not i.wall:
+                            i.visited = True
+                            i.prev = current
+                            queue.append(i)
+            else:
+                if noflag and not flag:
+                    Tk().wm_withdraw()
+                    messagebox.showinfo("Inimigos não encontrados", "Pressione ESC e tente outro mapa")
+                    noflag = False
+                else:
+                    continue
+
+        SCREEN.fill((0, 20, 20))
+        for i in range(PARAMS["cols"]):
+            for j in range(PARAMS["rows"]):
+                spot = grid[i][j]
+                spot.show(SCREEN, (44, 62, 80))
+                if spot in path:
+                    spot.show(SCREEN, (46, 204, 113))
+                    spot.show(SCREEN, (192, 57, 43), 0)
+                elif spot.visited:
+                    spot.show(SCREEN, (44, 62, 80))
+                if spot in queue and not flag:
+                    spot.show(SCREEN, (44, 62, 80))
+                    spot.show(SCREEN, (39, 174, 96), 0)
+                if spot == start:
+                    spot.show(SCREEN, (0, 255, 200), shape=2)
+                if spot == end or spot == end_2:
+                    spot.show(SCREEN, (255, 0, 0), shape=3)
+
+        pygame.display.flip()
 
         pygame.display.update()
 
