@@ -31,11 +31,14 @@ O submarino principal e os submarinos inimigos aparecem de forma aleatoria a cad
 
 ## Instalação 
 **Linguagem**: Python 3.8.13<br>
-**Framework**: pygame<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+
+Instale o pygame
+```
+pip install pygame==2.1.2
+```
 
 ## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
 
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+```
+python pygame_menu.py
+```
