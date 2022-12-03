@@ -21,6 +21,7 @@ BG = pygame.image.load("assets/submarine_background.jpg")
 pygame.mixer.music.load('assets/Sneaky-Snitch.mp3')
 pygame.mixer.music.play(-1)
 
+
 def play():
 
     queue, visited = deque(), []
@@ -42,7 +43,7 @@ def play():
     queue.append(start)
     start.visited = True
     no_flag = True
-    star_tflag = False
+    start_flag = False
 
     while True:
         for event in pygame.event.get():
@@ -57,11 +58,11 @@ def play():
                     utils.create_wall(pygame.mouse.get_pos(), event.buttons[0], grid, w, h)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    star_tflag = True
+                    start_flag = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     main_menu()
-        if star_tflag:
+        if start_flag:
             if len(queue) > 0:
                 current = queue.popleft()
                 if current == end or current == end_2 or current == end_3:
@@ -104,6 +105,7 @@ def play():
 
         pygame.display.update()
 
+
 def main_menu():
     while True:
         SCREEN.blit(BG, (0, 0))
@@ -136,6 +138,7 @@ def main_menu():
                     sys.exit()
 
         pygame.display.update()
+
 
 if __name__ == '__main__':
     main_menu()

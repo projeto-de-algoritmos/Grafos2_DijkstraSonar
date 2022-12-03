@@ -2,21 +2,23 @@
 
 **Conteúdo da Disciplina**: Grafos2<br>
 
-## Alunos
+## Aluno
 |Matrícula | Aluno |
 | -- | -- |
-| 15/0122837 |  Davi Alves Bezerra|
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 15/0122837 | Davi Alves Bezerra |
 
 ## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+Dijkstra's Sonar é um joguinho que tem como objetivo encontrar os inimigos através de um sonar. 
+Ao encontrar o submarino inimigo é traçado o caminho a partir do algorimo de Dijkstra para o ataque ser realizado.
+O submarino principal e os submarinos inimigos aparecem de forma aleatoria a cada rodada.
+É possível desenhar com o mouse alguns obstaculos para dificultar o sonar encontrar os inimigos.
 
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
+**Linguagem**: Python 3.8.13<br>
+**Framework**: pygame<br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 
 ## Uso 
