@@ -14,15 +14,31 @@ O submarino principal e os submarinos inimigos aparecem de forma aleatoria a cad
 É possível desenhar com o mouse alguns obstaculos para dificultar o sonar encontrar os inimigos.
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+### Tela inicial
+![image](https://user-images.githubusercontent.com/34287081/205464648-3236d05d-232a-4a1a-99f9-7882bf3292a4.png)
+> Aperte o Play para iniciar o jogo
+
+### Tela do jogo
+![image](https://user-images.githubusercontent.com/34287081/205464693-96ef75b7-ec78-4654-81a5-afd44e99fba7.png)
+
+1. Desenhe obstaculos usando o mouse
+2. Aperte ENTER para iniciar o sonar
+3. Pressione ESC para sair
+
+![image](https://user-images.githubusercontent.com/34287081/205464751-9589a490-0d7c-4771-92ec-63bcc8f5f6b0.png)
+
+> Ao encontrar os inimigos ele mostrara o menor caminho para o ataque
 
 ## Instalação 
 **Linguagem**: Python 3.8.13<br>
-**Framework**: pygame<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+
+Instale o pygame
+```
+pip install pygame==2.1.2
+```
 
 ## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
 
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+```
+python pygame_menu.py
+```
